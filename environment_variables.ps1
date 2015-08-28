@@ -1,0 +1,2 @@
+﻿$fitProcessIds = Get-WmiObject Win32_process -Filter "CommandLine like '%fitnesse%'" | select-object -expandproperty ProcessId
+$variables = (Get-Process -id $fitProcessIds).StartInfo.EnvironmentVariables

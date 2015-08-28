@@ -1,0 +1,26 @@
+USN Rollback Issue
+При восстановлении снапшота виртуальной машины (можно читать как при восстановлении с помощью Акрониса) необходимо.
+
+Загрузить контроллер в DSRM (Directory Service Restore Mode) режиме. Если вы загрузились в обычном режиме то переходите к методу №2.
+Открыть редактор реестра, найти ветку
+HKLM\System\CurrentControlSet\Services\NTDS\Parameters
+в ней ищем параметр DSA Previous Restore Count и ставим его в 0. Если значения нет то создавать его не надо.
+
+Добавляем Database restored from backupв
+HKLM\System\CurrentControlSet\Services\NTDS\Parameters
+Data type: REG_DWORD
+Value: 1
+Выполняем перезагрузку.
+Проверяем что значение DSA Previous Restore Count стало равным 1.
+В журнале Directory Service проверьте события ID 1109 или ID 1587. Эти события подтверждают что база Active Directory восстановлена нормально.
+
+Метод №2
+
+To get a single domain controller out of USN Rollback:
+
+Open Regedit
+Navigate to HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NTDS\Parameters
+Locate the key “Dsa Not Writable”=dword:00000004
+Delete the entire key
+Enable replication by running repadmin /options servername -DISABLE_OUTBOUND_REPL and repadmin /options servername -DISABLE_INBOUND_REPL
+Reboot

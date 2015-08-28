@@ -1,0 +1,28 @@
+
+Please try to reduce the Tombstone Life Time to 2 to test:
+
+Tomb Stone Life Time is 180 days and we might have to reduce it to 2 days so that the Garbage Collection process deletes those objects from the Deleted Objects container within 2 days. However changing the Tomb Stone Life Time period shouldn’t be a problem following things should be considered :
+1. AD Replication should be working fine. Issues speeding up the deletion could create lingering objects.  This would only occur if something was deleted and then garbage collection removed it before a DC was made aware of the original deletion.  If we’re not seeing any replication events and all DCs are online it shouldn’t be a problem.
+2. Once the objects are deleted we would have to change the TSL back to the original value.
+3. This will speed up the permanent deletion of objects so recovery of deleted objects will not be an option after the garbage collection occurs.
+Please follow the following steps to reduce the TombStone Lifetime period :  To modify the tombstone lifetime by using Ldp.exe
+1. To open Ldp.exe, click Start, click Run, and then type ldp.exe.
+2. To connect and bind to the server that hosts the forest root domain of your Active Directory environment, under Connections, click Connect, and then click Bind. 
+3. In the console tree, right-click the CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration container, and then click Modify.
+4. In the Modify dialog box, in Edit Entry Attribute, type tombstoneLifetime.
+5. In the Modify dialog box, in Values, type the number of days that you want to set for the tombstone lifetime value. (The minimum is 2 days.)
+6. In the Modify dialog box, under Operation click Replace, click Enter, and then click Run.
+Please feel free to contact me if you need any help in following the action plan.
+
+dsquery * "cn=directory service,cn=windows nt,cn=services,cn=configuration,dc=<forestDN>" –scope base –attr tombstonelifetime
+dsquery * "cn=directory service,cn=windows nt,cn=services,cn=configuration,dc=corp,dc=proseware,dc=com" –scope base –attr tombstonelifetime
+
+To determine the tombstone lifetime for the forest using ADSIEdit
+Click Start, point to Administrative Tools, and then click ADSI Edit.
+In ADSI Edit, right-click ADSI Edit, and then click Connect to.
+For Connection Point, click Select a well known Naming Context, and then click Configuration.
+If you want to connect to a different domain controller, for Computer, click Select or type a domain or server: (Server | Domain [:port]). Provide the server name or the domain name and Lightweight Directory Access Protocol (LDAP) port (389), and then click OK.
+Double-click Configuration, CN=Configuration,DC=ForestRootDomainName, CN=Services, and CN=Windows NT.
+Right-click CN=Directory Service, and then click Properties.
+In the Attribute column, click tombstoneLifetime.
+Note the value in the Value column. If the value is <not set>, the value is 60 days.

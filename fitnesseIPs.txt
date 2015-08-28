@@ -1,0 +1,7 @@
+InstallSuites SuiteSetUp
+ExpandCollapse
+Set lab IP addresses
+script
+eval	 function global:Get-HostIpAddress($hostName) { $config = ConvertFrom-Json "$env:Hosts" $config | Where-Object {$_.Name -eq $hostName} | Select-Object -ExpandProperty 'PrivateIpAddress' } 
+$DC1=	eval	Get-HostIpAddress 'dc1'
+$WS1=	eval	Get-HostIpAddress 'ws1'

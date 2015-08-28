@@ -1,0 +1,15 @@
+strict replication consistency enabled
+Lingering Objects
+
+To add the global catalog using Repadmin
+Open an elevated command prompt, type the following command, and press ENTER:
+repadmin.exe /options DC_NAME +IS_GC
+
+Как узнать, где находится глобальный каталог? Для текущего домена достаточно просто набрать в командной строке:
+dsquery server –isgc
+
+Команду dsquery server также можно использовать для поиска серверов GC в конкретном домене, лесе или сайте. Например:
+dsquery server –domain contoso.com –isgc — ищем серверы глобального каталога в домене contoso.com;
+dsquery server –forest –isgc — поиск серверов GC во всем лесу;
+dsquery server –site Default-First-Site-Name — поиск по сайту Default-First-Site-Name.
+Имейте в виду, что для поиска глобального каталога по сайту нужно знать полное имя сайта и нельзя использовать символы подстановки.

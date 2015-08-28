@@ -1,0 +1,43 @@
+https://technet.microsoft.com/en-us/library/cc949134.aspx
+To enable strict replication on a DC, use the command
+
+repadmin /regkey <DC or * for all DCs in the forest> +strict
+You can also enable it by giving the registry key
+
+HKLM\System\CurrentControlSet\Services\NTDS\Parameters                              Strict Replication Consistency
+a value of 1.
+
+Enable strict replication consistency
+To ensure that lingering objects cannot be replicated if they occur, enable strict replication consistency on all domain controllers. The setting for replication consistency is stored in the registry on each domain controller. However, on domain controllers that are running Windows Server 2003 with Service Pack 1 (SP1), Windows Server 2003 with Service Pack 2 (SP2), Windows Server 2003 R2, or Windows Server 2008, you can use Repadmin to enable strict replication consistency on one or all domain controllers.
+On domain controllers running Windows Server 2003 without SP1 or running any version of Windows 2000 Server, you must edit the registry to enable the setting.
+Use Repadmin to enable strict replication consistency
+Use this procedure to remove lingering objects on a domain controller that is running Windows Server 2003 with SP1, Windows Server 2003 with SP2, Windows Server 2003 R2, or Windows Server 2008.
+Membership in Domain Admins, or equivalent, is the minimum required to complete this procedure on a single domain controller. Membership in Enterprise Admins, or equivalent, is the minimum required to complete this procedure on all domain controllers in the forest. Review details about using the appropriate accounts and group memberships at Local and Domain Default Groups (http://go.microsoft.com/fwlink/?LinkId=83477).
+To use Repadmin to enable strict replication consistency
+Open a Command Prompt as an administrator: On the Start menu, right-click Command Prompt, and then click Run as administrator. If the User Account Control dialog box appears, provide Domain Admins or Enterprise Admins credentials, if required, and then click Continue.
+At the command prompt, type the following command, and then press ENTER:
+repadmin /regkey <DC_LIST> +strict
+ 
+Parameter	Description
+/regkey
+Enables (+) and disables (-) the value for the Strict Replication Consistency registry entry in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NTDS\Parameters
+<DC_LIST>
+The name of a single domain controller, or* to apply the change to all domain controllers in the forest. For the domain controller name, you can use the DNS name, the distinguished name of the domain controller computer object, or the distinguished name of the domain controller server object, for example, the distinguished name CN=DC5,OU=Domain Controllers,DC=contoso,DC=com or the DNS name DC5.contoso.com.
++strict
+Enables the Strict Replication Consistency registry entry.
+If you do not use * to apply the change to all domain controllers, repeat step 2 for every domain controller on which you want to enable strict replication consistency.
+noteNote
+For more naming options and information about the syntax of the <DC_LIST> parameter, at the command prompt type repadmin /listhelp. For information about the syntax of the /regkey and /removelingeringobjects parameters, type repadmin /experthelp.
+Use Regedit to enable strict replication consistency
+As an alternative to using Repadmin, you can enable strict replication consistency by editing the registry directly. The registry method is required for a domain controller that is running a version of Windows Server that is earlier than Windows Server 2003 with SP1. The setting for replication consistency is stored in the Strict Replication Consistency entry in HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NTDS\Parameters.
+The values for the Strict Replication Consistency registry entry are as follows:
+Value: 1 (0 to disable)
+
+Default: 1 (enabled) in a new Windows Server 2003 or Windows Server 2008 forest; otherwise 0.
+
+Data type: REG_DWORD
+
+Requirements:
+Membership in Domain Admins, or equivalent, is the minimum required to complete this procedure. Review details about using the appropriate accounts and group memberships at Local and Domain Default Groups (http://go.microsoft.com/fwlink/?LinkId=83477).
+
+Tool: Regedit.exe
