@@ -20,3 +20,13 @@ New-Item -ItemType File -Force -Path 'C:\Windows\system32\WindowsPowerShell\v1.0
 [System.Reflection.Assembly]::LoadFrom("C:\Program Files\Amazon\Ec2ConfigService\Ec2ConfigLibrary.dll")
 #Write to the Console
 [ConsoleLibrary.ConsoleLibrary]::Instance().WriteToConsole("This was written using the Ec2ConfigLibrary", $true)
+
+function Write-InstanceSystemLog{
+    param(
+        $string
+    )
+    Stop-Service Ec2Config
+    New-Item -ItemType File -Force -Path 'C:\Windows\system32\WindowsPowerShell\v1.0\Logs\Ec2ConfigLog.txt'
+    [System.Reflection.Assembly]::LoadFrom('C:\Program Files\Amazon\Ec2ConfigService\Ec2ConfigLibrary.dll')
+    [ConsoleLibrary.ConsoleLibrary]::Instance().WriteToConsole($string, $true)
+}
