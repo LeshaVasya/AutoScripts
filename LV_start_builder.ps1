@@ -7,7 +7,7 @@
     $InstanceType = 'c3.large',
     $Region = 'us-east-1',
     $AvailabilityZone = 'us-east-1e',
-    $AmiName = 'rmad-builder-LV',
+    $AmiName = 'rmad-builder',
     [ValidateSet('Resharper', 'VA')]
     [Array]
     $Install,
