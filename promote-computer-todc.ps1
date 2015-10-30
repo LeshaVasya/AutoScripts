@@ -1,4 +1,22 @@
-﻿#Create new user
+﻿#On the remote Powershell console, enable remote desktop and firewall using the following cmdlets:
+# Enable Remote Desktop
+set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+
+# Allow incoming RDP on firewall
+Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
+# Enable secure RDP authentication
+set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1   
+
+#disable firewall
+netsh advfirewall set allprofiles state off
+ netsh advfirewall set allprofiles state on
+
+#Get installed programs list
+Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |Select-Object DisplayName, DisplayVersion, Publisher, InstallDate, HelpLink, UninstallString
+Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |Select-Object DisplayName, DisplayVersion, Publisher, InstallDate, HelpLink, UninstallString
+
+#Create new user
 $cn = [ADSI]"WinNT://edlt"
 $user = $cn.Create("User","root")
 $user.SetPassword("1221")
@@ -43,11 +61,12 @@ Rename-Computer -NewName DC1
 Restart-Computer -Force 
 
 #Step 2
+Get-NetIpaddress #To get InterfaceIndex
 New-NetIPAddress –InterfaceIndex 12 –IPAddress 192.168.2.3 -PrefixLength 24
-Set-DNSClientServerAddress –InterfaceIndex 13 -ServerAddresses 10.95.160.125
+Set-DNSClientServerAddress –InterfaceIndex 12 -ServerAddresses 10.30.40.89
 
 #Step 3
-Add-Computer -DomainName ViaMonstra -Credential (Get-Credential)
+Add-Computer -DomainName iclone.local -Credential (Get-Credential)
 Restart-Computer -Force
 
 #Step 4
@@ -84,9 +103,9 @@ Install-ADDSForest -DomainName rmad.local -SafeModeAdministratorPassword $Passwo
 
 #Step 5 Install new dc
 $Password = ConvertTo-SecureString -AsPlainText -String ~123qwerty -Force
-Install-ADDSDomainController -DomainName rmad.local -DatabasePath "%SYSTEMROOT%\NTDS" `
+Install-ADDSDomainController -DomainName iclone.local -DatabasePath "%SYSTEMROOT%\NTDS" `
 -LogPath "%SYSTEMROOT%\NTDS" -SysvolPath "%SYSTEMROOT%\SYSVOL" -InstallDns `
--ReplicationSourceDC DC1.rmad.local -SafeModeAdministratorPassword $Password `
+-ReplicationSourceDC 2012r2dc.iclone.local -SafeModeAdministratorPassword $Password `
 -NoRebootOnCompletion
 
 #Step 5 Install additional rodc
