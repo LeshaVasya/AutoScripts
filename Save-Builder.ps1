@@ -1,7 +1,12 @@
 ﻿#Import-Module AWSPowerShell -Force
 Import-module "C:\WorkSrc\Scripts\AWS\AWSHelper.psm1" -force
 Set-DefaultAWSRegion "us-east-1"
+   
 
+$InstanceId = "i-70526cc7"
+Save-Instance -InstanceId $InstanceId -SaveLastAmi $true -Description "Enable AutoAdmin logon" -CustomAmiName "rmad-at-2008r2-2DC-ws1"
+  
+<#
 $InstanceId = "i-566f4184"
 Save-Instance -InstanceId $InstanceId -SaveLastAmi $true -Description "2012R2_DC1Core_RODC2Core" -CustomAmiName "rmad-at-2012r2-2dc-core-dc1core"
 
@@ -10,7 +15,7 @@ Save-Instance -InstanceId $InstanceId -SaveLastAmi $true -Description "2012R2_DC
 
 $InstanceId = "i-2990bffb"
 Save-Instance -InstanceId $InstanceId -SaveLastAmi $true -Description "2012R2_DC1Core_RODC2Core" -CustomAmiName "rmad-at-2012r2-2dc-core-ws1"
-<#
+
 $InstanceId = "i-3742fc9f"
 Save-Instance -InstanceId $InstanceId -SaveLastAmi $false -Description "2012R2 2DC RODC Core Lab" -CustomAmiName "rmad-at-2012r2-2dc-core-dc1core"
 
