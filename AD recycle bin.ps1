@@ -1,9 +1,11 @@
 ﻿#Raise forest functional level to at least 2008 R2
 Import-module ActiveDirectory
 Set-ADForestMode –Identity domainName.ext -ForestMode Windows2008R2Forest
-Set-AdForestMode -identity rmad.local -server dc1.rmad.local -forestmode Windows2008R2Forest -Force
 
-Set-AdDomainMode -identity rmad.local -server dc1.rmad.local -domainmode Windows2008R2Domain -Force
+Set-AdDomainMode -identity rmad.local -server dc1.rmad.local -domainmode Windows2008R2Domain 
+Set-AdForestMode -identity rmad.local -server dc1.rmad.local -forestmode Windows2008R2Forest 
+
+
 
 #Enable AD recycle Bin
 #http://blogs.technet.com/b/askds/archive/2009/08/27/the-ad-recycle-bin-understanding-implementing-best-practices-and-troubleshooting.aspx
