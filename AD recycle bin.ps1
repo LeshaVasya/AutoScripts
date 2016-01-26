@@ -5,6 +5,8 @@ Set-ADForestMode –Identity domainName.ext -ForestMode Windows2008R2Forest
 Set-AdDomainMode -identity rmad.local -server dc1.rmad.local -domainmode Windows2008R2Domain 
 Set-AdForestMode -identity rmad.local -server dc1.rmad.local -forestmode Windows2008R2Forest 
 
+Enable-ADOptionalFeature "Recycle Bin Feature" -server ((Get-ADForest -Current LocalComputer).DomainNamingMaster) -Scope ForestOrConfigurationSet -Target (Get-ADForest -Current LocalComputer)
+
 
 
 #Enable AD recycle Bin

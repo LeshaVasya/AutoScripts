@@ -30,6 +30,12 @@ $username = 'root'
 $password = '~123qwerty'
 $desc = 'Another local admin'
 
+#Rename Local Admin Account
+$admin=[adsi]"WinNT://./Administrator,user"
+$admin.psbase.rename("Ron.Johnson")
+ 
+#Enables & Sets User Password
+invoke-command { net user Ron.Johnson Adm.$servicetag /active:Yes }
 
 $computer = [ADSI]"WinNT://$computername,computer"
 $user = $computer.Create("user", $username)
