@@ -2,8 +2,8 @@
 Import-module "C:\WorkSrc\Scripts\AWS\AWSHelper.psm1" -force
 Set-DefaultAWSRegion "us-east-1"
 
-$InstanceId = "i-13de2193"
-Save-Instance -InstanceId $InstanceId -SaveLastAmi $false -Description "2012R2FR. Rmad\LennyAdmin - ~123qwerty" -CustomAmiName "2012R2FRDC"
+$InstanceId = "i-0964a389"
+Save-Instance -InstanceId $InstanceId -SaveLastAmi $false -Description "2012R2FR. Rmad\LennyAdmin - ~123qwerty. DSRM ytrewq~123" -CustomAmiName "2012R2FRDC"
 
 <#
 $InstanceId = "i-3c8100b5"
